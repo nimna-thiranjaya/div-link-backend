@@ -2,13 +2,14 @@ import { StatusCodes } from "http-status-codes";
 import InternalServerError from "./error.classes/InternalServerError";
 import { NextFunction, Request, Response } from "express";
 import CustomResponse from "../util/response";
+
 const errorHandlerMiddleware = async (
   err: any,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  let customError = {
+  let customError: any = {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
     message: err.message || "Something went wrong!",
     data: {},
@@ -23,8 +24,9 @@ const errorHandlerMiddleware = async (
 
   if (err.name === "ValidationError") {
     let validatorKeyValuePairs: any = {};
-    Object.values(err.errors).forEach((key: any) => {
-      validatorKeyValuePairs[key] = err.errors[key].message;
+
+    Object.values(err.errors).forEach((error: any) => {
+      validatorKeyValuePairs[error.properties.path] = error.properties.message;
     });
 
     customError.statusCode = StatusCodes.BAD_REQUEST;

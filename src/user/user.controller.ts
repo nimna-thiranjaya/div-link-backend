@@ -45,6 +45,7 @@ const RegisterUser = async (req: Request, res: Response) => {
   } catch (e) {
     //abort transaction
     await session.abortTransaction();
+    console.log(e);
     throw e;
   } finally {
     //end session
