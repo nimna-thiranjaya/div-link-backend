@@ -5,6 +5,8 @@ import { connectDB } from "./common/common.config";
 import errorHandlerMiddleware from "./error/error.middleware";
 import "express-async-errors";
 import NotFoundError from "./error/error.classes/NotFoundError";
+import constants from "./constant";
+
 const app: Express = express();
 
 dotenv.config();
@@ -12,14 +14,16 @@ app.use(cors());
 app.use(express.json());
 
 //import routes
+import UserRouter from "./user/user.route";
 
 //define routes
+app.use(constants.API.PREFIX.concat("/user"), UserRouter);
 
 //error handler middleware
 app.use(errorHandlerMiddleware);
 
-//not found route
-app.use((req: Request, res: Response) => {
+//404 not found route
+app.all("*", async (req: Request, res: Response) => {
   throw new NotFoundError("API endpoint not found!");
 });
 
