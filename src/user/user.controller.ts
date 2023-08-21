@@ -15,8 +15,11 @@ const RegisterUser = async (req: Request, res: Response) => {
   const body: any = req.body;
   const user: any = new User(body);
 
-  if (!body.password) {
-    throw new BadRequestError("Password is required!");
+  //check if user already exists
+  const existingUser = await userService.findByEmail(user.email, null);
+
+  if (existingUser) {
+    throw new BadRequestError("User already exists!");
   }
 
   //construct auth object

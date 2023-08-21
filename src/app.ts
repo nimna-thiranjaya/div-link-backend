@@ -15,9 +15,11 @@ app.use(express.json());
 
 //import routes
 import UserRouter from "./user/user.route";
+import AuthRouter from "./auth/auth.route";
 
 //define routes
 app.use(constants.API.PREFIX.concat("/user"), UserRouter);
+app.use(constants.API.PREFIX.concat("/auth"), AuthRouter);
 
 //error handler middleware
 app.use(errorHandlerMiddleware);
