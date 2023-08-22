@@ -9,6 +9,14 @@ const constants = {
       USER: "user",
     },
   },
+  WELLKNOWNSTATUS: {
+    ACTIVE: 1,
+    DISABLED: 0,
+    PENDING: 2,
+    CONFIRM: 3,
+    REJECT: 4,
+    DELETED: 5,
+  },
 };
 
 export default constants;

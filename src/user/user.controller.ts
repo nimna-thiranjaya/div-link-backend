@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import userUtil from "./user.util";
 import userService from "./user.service";
+import organizationService from "../organization/organization.service";
 import User from "./user.model";
 import Auth from "../auth/auth.model";
+import Organization from "../organization/organization.model";
 import { StatusCodes } from "http-status-codes";
 import { startSession } from "mongoose";
 import CustomResponse from "../util/response";
@@ -10,10 +12,11 @@ import CustomResponse from "../util/response";
 // Import custom errors
 import NotFoundError from "../error/error.classes/NotFoundError";
 import BadRequestError from "../error/error.classes/BadRequestError";
+import constants from "../constant";
 
 const RegisterUser = async (req: Request, res: Response) => {
   const body: any = req.body;
-  const user: any = new User(body);
+  const user: any = new User(body.user);
 
   //check if user already exists
   const existingUser = await userService.findByEmail(user.email, null);
@@ -22,10 +25,16 @@ const RegisterUser = async (req: Request, res: Response) => {
     throw new BadRequestError("User already exists!");
   }
 
+  let organization: any = null;
+  if (body.user.role == constants.USER.ROLES.ADMIN) {
+    organization = new Organization(body.organization);
+    user.organization = organization._id;
+  }
+
   //construct auth object
   const auth = new Auth();
   auth._id = user.email;
-  auth.password = await userUtil.hashPassword(body.password);
+  auth.password = await userUtil.hashPassword(body.user.password);
   auth.user = user._id;
 
   let createdUser = null;
@@ -36,6 +45,11 @@ const RegisterUser = async (req: Request, res: Response) => {
   try {
     //start transaction in session
     session.startTransaction();
+
+    //save organization
+    if (organization) {
+      await organizationService.save(organization, session);
+    }
 
     //save user
     createdUser = await userService.save(user, session);
@@ -48,7 +62,6 @@ const RegisterUser = async (req: Request, res: Response) => {
   } catch (e) {
     //abort transaction
     await session.abortTransaction();
-    console.log(e);
     throw e;
   } finally {
     //end session

@@ -1,18 +1,15 @@
 import mongoose from "mongoose";
 import constants from "../constant";
 
-const UserSchema = new mongoose.Schema(
+const OrganizationSchema = new mongoose.Schema(
   {
-    fullName: {
+    orgName: {
       type: String,
-      required: [true, "Full name is required"],
-      maxlength: [100, "Full name cannot be more than 50 characters"],
+      required: [true, "Organization name is required"],
     },
-    email: {
+    orgEmail: {
       type: String,
       required: [true, "Email is required"],
-      unique: true,
-      maxlength: [100, "Email cannot be more than 100 characters"],
       validate: {
         validator: (value: string) => {
           return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
@@ -22,20 +19,17 @@ const UserSchema = new mongoose.Schema(
         message: (props: any) => `${props.value} is not a valid email`,
       },
     },
-    profileImage: {
-      type: Object,
-    },
-    role: {
+    orgAddress: {
       type: String,
-      required: [true, "Role is required"],
-      enum: {
-        values: [constants.USER.ROLES.ADMIN, constants.USER.ROLES.USER],
-        message: "Valid roles required",
-      },
+      required: [true, "Address is required"],
     },
-    organization: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Organization",
+
+    country: {
+      type: String,
+      required: [true, "Country is required"],
+    },
+    orgImage: {
+      type: String,
     },
     status: {
       type: Number,
@@ -48,4 +42,4 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("User", UserSchema);
+export default mongoose.model("Organization", OrganizationSchema);
