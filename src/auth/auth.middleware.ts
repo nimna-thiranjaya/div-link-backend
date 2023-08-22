@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import authUtil from "./auth.util";
 import UnauthorizedError from "../error/error.classes/UnauthorizedError";
 import ForbiddenError from "../error/error.classes/ForbiddenError";
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 
 const authorize = (rolesArray: any = []) => {
   if (!rolesArray) rolesArray = [];

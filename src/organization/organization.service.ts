@@ -12,4 +12,11 @@ const findById = async (id: string, session: any) => {
   }
 };
 
-export default { save, findById };
+const findAll = async (session: any) => {
+  if (session) {
+    return await Organization.find().sort({ createdAt: 1 }).session(session);
+  } else {
+    return await Organization.find().sort({ createdAt: 1 });
+  }
+};
+export default { save, findById, findAll };

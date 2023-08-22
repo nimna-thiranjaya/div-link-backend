@@ -16,10 +16,12 @@ app.use(express.json());
 //import routes
 import UserRouter from "./user/user.route";
 import AuthRouter from "./auth/auth.route";
+import OrganizationRouter from "./organization/organization.route";
 
 //define routes
 app.use(constants.API.PREFIX.concat("/user"), UserRouter);
 app.use(constants.API.PREFIX.concat("/auth"), AuthRouter);
+app.use(constants.API.PREFIX.concat("/organization"), OrganizationRouter);
 
 //error handler middleware
 app.use(errorHandlerMiddleware);
