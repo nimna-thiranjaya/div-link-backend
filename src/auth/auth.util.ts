@@ -25,8 +25,12 @@ const extractToken = (token: any) => {
   return tokenArray[1];
 };
 
+const verifyToken = (token: any) => {
+  return jwt.verify(token, JWT_SECRET);
+};
+
 const comparePassword = async (password: string, hash: string) => {
   return await bcryptjs.compare(password, hash);
 };
 
-export default { signToken, extractToken, comparePassword };
+export default { signToken, extractToken, comparePassword, verifyToken };
