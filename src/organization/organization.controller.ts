@@ -15,4 +15,18 @@ const GetAllOrganizations = async (req: Request, res: Response) => {
   );
 };
 
-export { GetAllOrganizations };
+const GetOrganizationById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const organization = await organizationService.findById(id, null);
+
+  CustomResponse(
+    res,
+    true,
+    StatusCodes.OK,
+    "Organization fetched successfully!",
+    organization
+  );
+};
+
+export { GetAllOrganizations, GetOrganizationById };

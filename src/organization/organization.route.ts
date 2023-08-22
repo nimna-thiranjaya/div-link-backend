@@ -1,8 +1,12 @@
 import { Router } from "express";
-import { GetAllOrganizations } from "./organization.controller";
+import {
+  GetAllOrganizations,
+  GetOrganizationById,
+} from "./organization.controller";
 
 const OrganizationRouter = Router();
 
-OrganizationRouter.get("/get-all", GetAllOrganizations);
+OrganizationRouter.get("/getAll", GetAllOrganizations);
+OrganizationRouter.get("/getOrg/:id", GetOrganizationById);
 
 export default OrganizationRouter;
