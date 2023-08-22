@@ -7,4 +7,4 @@ const multerUploader = multer({
   },
 });
 
-export { multerUploader };
+export default { multerUploader };
