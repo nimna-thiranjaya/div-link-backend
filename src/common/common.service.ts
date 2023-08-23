@@ -1,26 +1,46 @@
-import cloudinary from "./common.config";
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+dotenv.config();
 
-const uploadImageAndGetUri = async (file: any, folder: any) => {
-  try {
-    return await cloudinary.uploader
-      .upload(file, { folder })
-      .then((data: any) => {
-        return {
-          url: data.secure_url,
-          publicId: data.public_id,
-        };
-      });
-  } catch (e: any) {
-    throw new Error(e);
-  }
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY || "",
+  api_secret: process.env.CLOUDINARY_API_SECRET || "",
+});
+
+const uploadImageAndGetUri = (file: any, folder: any) => {
+  const imageBuffer = file.buffer;
+
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream(
+        {
+          folder: folder,
+        },
+        (error: any, result: any) => {
+          if (error) {
+            console.error(error);
+            reject(error);
+            return;
+          }
+          let image = {
+            uri: result.secure_url,
+            public_id: result.public_id,
+          };
+          resolve(image);
+        }
+      )
+      .end(imageBuffer);
+  });
 };
 
 const deleteImageByUri = async (public_id: string) => {
   try {
-    return await cloudinary.uploader.destroy(public_id);
+    const data = await cloudinary.uploader.destroy(public_id);
+    return data;
   } catch (error) {
     console.error("Error deleting image:", error);
   }
 };
 
-export { uploadImageAndGetUri, deleteImageByUri };
+export default { uploadImageAndGetUri, deleteImageByUri };
