@@ -19,7 +19,7 @@ const RegisterUser = async (req: Request, res: Response) => {
   const user: any = new User(body.user);
 
   //check if user already exists
-  const existingUser = await userService.findByEmail(user.email, null);
+  const existingUser = await userService.findByEmail(user.email);
 
   if (existingUser) {
     throw new BadRequestError("User already exists!");
@@ -77,4 +77,22 @@ const RegisterUser = async (req: Request, res: Response) => {
   );
 };
 
-export { RegisterUser };
+const GetUserProfile = async (req: Request, res: Response) => {
+  const auth: any = req.auth;
+
+  const user = await userService.findById(auth._id);
+
+  if (!user) {
+    throw new NotFoundError("User not found!");
+  }
+
+  return CustomResponse(
+    res,
+    true,
+    StatusCodes.OK,
+    "Profile fetched successfully!",
+    user
+  );
+};
+
+export { RegisterUser, GetUserProfile };
