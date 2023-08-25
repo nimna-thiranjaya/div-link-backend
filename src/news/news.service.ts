@@ -25,4 +25,24 @@ const findAllActiveNews = async () => {
     });
 };
 
-export default { save, findById, findAllActiveNews };
+//gell active related to added by user
+const findAllActiveNewsForSpecificUser = async (userId: string) => {
+  return await News.find({
+    status: constants.WELLKNOWNSTATUS.ACTIVE,
+    addedBy: userId,
+  })
+    .populate({
+      path: "addedBy",
+      populate: {
+        path: "organization",
+      },
+    })
+    .sort({ createdAt: -1 });
+};
+
+export default {
+  save,
+  findById,
+  findAllActiveNews,
+  findAllActiveNewsForSpecificUser,
+};

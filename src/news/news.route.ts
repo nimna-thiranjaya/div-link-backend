@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CreateNews, GetAllActiveNewsForUser } from "./news.controller";
+import { CreateNews, GetAllActiveNews } from "./news.controller";
 import authMiddleware from "../auth/auth.middleware";
 import commonMiddleware from "../common/common.middleware";
 import constants from "../constant";
@@ -13,6 +13,13 @@ NewsRouter.post(
   CreateNews
 );
 
-NewsRouter.get("/getAllActiveNews", GetAllActiveNewsForUser);
+NewsRouter.get(
+  "/getAllActiveNews",
+  authMiddleware.authorize([
+    constants.USER.ROLES.ADMIN,
+    constants.USER.ROLES.USER,
+  ]),
+  GetAllActiveNews
+);
 
 export default NewsRouter;

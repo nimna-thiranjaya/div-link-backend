@@ -9,6 +9,7 @@ import newsService from "./news.service";
 
 import NotFoundError from "../error/error.classes/NotFoundError";
 import BadRequestError from "../error/error.classes/BadRequestError";
+import constants from "../constant";
 
 const CreateNews = async (req: Request, res: Response) => {
   let body: any = req.body;
@@ -61,10 +62,18 @@ const CreateNews = async (req: Request, res: Response) => {
   );
 };
 
-const GetAllActiveNewsForUser = async (req: Request, res: Response) => {
-  const activeNews = await newsService.findAllActiveNews();
+const GetAllActiveNews = async (req: Request, res: Response) => {
+  let auth = req.auth;
+  console.log(auth);
+
+  let activeNews: any[] = [];
+  if (auth.role === constants.USER.ROLES.USER) {
+    activeNews = await newsService.findAllActiveNews();
+  } else if (auth.role === constants.USER.ROLES.ADMIN) {
+    activeNews = await newsService.findAllActiveNewsForSpecificUser(auth._id);
+  }
 
   CustomResponse(res, true, StatusCodes.OK, "", activeNews);
 };
 
-export { CreateNews, GetAllActiveNewsForUser };
+export { CreateNews, GetAllActiveNews };

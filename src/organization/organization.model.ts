@@ -31,6 +31,9 @@ const OrganizationSchema = new mongoose.Schema(
     orgImage: {
       type: String,
     },
+    description: {
+      type: String,
+    },
     status: {
       type: Number,
       default: constants.WELLKNOWNSTATUS.ACTIVE,
