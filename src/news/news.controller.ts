@@ -64,7 +64,6 @@ const CreateNews = async (req: Request, res: Response) => {
 
 const GetAllActiveNews = async (req: Request, res: Response) => {
   let auth = req.auth;
-  console.log(auth);
 
   let activeNews: any[] = [];
   if (auth.role === constants.USER.ROLES.USER) {
