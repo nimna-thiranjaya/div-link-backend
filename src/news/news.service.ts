@@ -26,7 +26,7 @@ const findAllActiveNews = async () => {
 };
 
 //gell active related to added by user
-const findAllActiveNewsForSpecificUser = async (userId: string) => {
+const findAllActiveNewsByAddedUser = async (userId: string) => {
   return await News.find({
     status: constants.WELLKNOWNSTATUS.ACTIVE,
     addedBy: userId,
@@ -44,5 +44,5 @@ export default {
   save,
   findById,
   findAllActiveNews,
-  findAllActiveNewsForSpecificUser,
+  findAllActiveNewsByAddedUser,
 };

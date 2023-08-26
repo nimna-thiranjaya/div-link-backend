@@ -19,7 +19,6 @@ const uploadImageAndGetUri = (file: any, folder: any) => {
         },
         (error: any, result: any) => {
           if (error) {
-            console.error(error);
             reject(error);
             return;
           }
@@ -39,7 +38,7 @@ const deleteImageByUri = async (public_id: string) => {
     const data = await cloudinary.uploader.destroy(public_id);
     return data;
   } catch (error) {
-    console.error("Error deleting image:", error);
+    throw error;
   }
 };
 
