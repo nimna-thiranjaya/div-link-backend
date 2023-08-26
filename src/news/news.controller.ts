@@ -9,6 +9,7 @@ import newsService from "./news.service";
 
 import NotFoundError from "../error/error.classes/NotFoundError";
 import BadRequestError from "../error/error.classes/BadRequestError";
+import ForbiddenError from "../error/error.classes/ForbiddenError";
 import constants from "../constant";
 
 const CreateNews = async (req: Request, res: Response) => {
@@ -35,7 +36,10 @@ const CreateNews = async (req: Request, res: Response) => {
     //upload image to cloudinary
     let uploadedObj: any = null;
     if (file) {
-      uploadedObj = await commonService.uploadImageAndGetUri(file, "news");
+      uploadedObj = await commonService.uploadImageAndGetUri(
+        file,
+        constants.CLOUDINARY.FILE_NAME + "/news"
+      );
     }
 
     if (uploadedObj != null) {
@@ -62,6 +66,7 @@ const CreateNews = async (req: Request, res: Response) => {
   );
 };
 
+//Get all active news for admin and user
 const GetAllActiveNews = async (req: Request, res: Response) => {
   let auth = req.auth;
 
@@ -75,10 +80,14 @@ const GetAllActiveNews = async (req: Request, res: Response) => {
   CustomResponse(res, true, StatusCodes.OK, "", activeNews);
 };
 
+//Delete news by id for admin
 const DeleteNews = async (req: Request, res: Response) => {
   let newsId = req.params.id;
+  let auth: any = req.auth;
 
-  let news = await newsService.findById(newsId);
+  let news: any = await newsService.findById(newsId);
+  if (auth._id == news.addedBy._id)
+    throw new ForbiddenError("You are not allow to delete this news!");
 
   if (news) {
     news.status = constants.WELLKNOWNSTATUS.DELETED;
@@ -90,6 +99,7 @@ const DeleteNews = async (req: Request, res: Response) => {
   }
 };
 
+//Update news by id for admin
 const UpdateNews = async (req: Request, res: Response) => {
   let newsId: string = req.params.id;
   let auth: any = req.auth;
@@ -98,7 +108,12 @@ const UpdateNews = async (req: Request, res: Response) => {
 
   let news: any = await newsService.findById(newsId);
 
+  console.log(news);
+
   if (!news) throw new NotFoundError("News not found!");
+
+  if (auth._id == news.addedBy._id)
+    throw new ForbiddenError("You are not allow to delete this news!");
 
   //construct news update object expect image and
   for (let key in body) {
@@ -107,7 +122,6 @@ const UpdateNews = async (req: Request, res: Response) => {
     }
   }
 
-  console.log(news);
   //start mongoose session
   const session = await startSession();
   let updatedNews = null;
@@ -117,20 +131,25 @@ const UpdateNews = async (req: Request, res: Response) => {
     session.startTransaction();
 
     //upload image to cloudinary
-    // let uploadedObj: any = null;
-    // if (file) {
-    //   uploadedObj = await commonService.uploadImageAndGetUri(file, "news");
+    let uploadedObj: any = null;
+    if (file) {
+      uploadedObj = await commonService.uploadImageAndGetUri(
+        file,
+        constants.CLOUDINARY.FILE_NAME + "/news"
+      );
 
-    //   //delete old image from cloudinary
-    //   if (news.newsImage.public_id) {
-    //     await commonService.deleteImageByUri(news.newsImage.public_id);
-    //   }
+      //delete old image from cloudinary
+      if (news.newsImage.public_id) {
+        await commonService.deleteImageByUri(news.newsImage.public_id);
+      }
 
-    //   news.newsImage = uploadedObj;
-    // }
+      if (uploadedObj) {
+        news.newsImage = uploadedObj;
+      }
+    }
 
-    // //save news
-    // updatedNews = await newsService.save(news, session);
+    //save news
+    updatedNews = await newsService.save(news, session);
 
     await session.commitTransaction();
   } catch (e) {
