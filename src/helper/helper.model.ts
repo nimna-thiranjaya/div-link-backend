@@ -1,20 +1,20 @@
 import mongoose from "mongoose";
 import constants from "../constant";
 
-const NewsCategorySchema = new mongoose.Schema(
+const HelperSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, "Name is required"],
     },
 
-    categoryDescription: {
+    description: {
       type: String,
     },
 
-    addedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    categoryType: {
+      type: String,
+      required: [true, "Category type is required"],
     },
 
     status: {
@@ -28,4 +28,4 @@ const NewsCategorySchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("NewsCategory", NewsCategorySchema);
+export default mongoose.model("Helper", HelperSchema);
