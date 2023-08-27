@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import constants from "../constant";
 
-const HelperSchema = new mongoose.Schema(
+const CategorySchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -15,6 +15,10 @@ const HelperSchema = new mongoose.Schema(
     categoryType: {
       type: String,
       required: [true, "Category type is required"],
+      enum: {
+        values: [constants.CATEGORYTYPES.NEWS],
+        message: "Valid category type required",
+      },
     },
 
     status: {
@@ -28,4 +32,4 @@ const HelperSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Helper", HelperSchema);
+export default mongoose.model("Category", CategorySchema);

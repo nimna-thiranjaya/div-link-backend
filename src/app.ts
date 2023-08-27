@@ -19,7 +19,7 @@ import AuthRouter from "./auth/auth.route";
 import OrganizationRouter from "./organization/organization.route";
 import AppointmentRouter from "./appointment/appointment.route";
 import NewsRouter from "./news/news.route";
-import HelperRouter from "./helper/helper.route";
+import CategoryRouter from "./category/category.route";
 
 //define routes
 app.use(constants.API.PREFIX.concat("/user"), UserRouter);
@@ -27,7 +27,7 @@ app.use(constants.API.PREFIX.concat("/auth"), AuthRouter);
 app.use(constants.API.PREFIX.concat("/organization"), OrganizationRouter);
 app.use(constants.API.PREFIX.concat("/appointment"), AppointmentRouter);
 app.use(constants.API.PREFIX.concat("/news"), NewsRouter);
-app.use(constants.API.PREFIX.concat("/helper"), HelperRouter);
+app.use(constants.API.PREFIX.concat("/category"), CategoryRouter);
 
 //error handler middleware
 app.use(errorHandlerMiddleware);

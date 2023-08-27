@@ -22,6 +22,10 @@ const constants = {
   CLOUDINARY: {
     FILE_NAME: "Dev_Link",
   },
+
+  CATEGORYTYPES: {
+    NEWS: "news",
+  },
 };
 
 export default constants;

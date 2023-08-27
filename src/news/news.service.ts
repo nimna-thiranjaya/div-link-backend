@@ -13,10 +13,11 @@ const findById = async (id: string) => {
   return await News.findById(id).populate("addedBy");
 };
 
-//get all news status active and sort by createdAt desc order and populate addedBy field in addedBy object contains user details from user details get organization details
+//get all news status active and sort by createdAt desc order and populate addedBy field in addedBy object contains user details from user details get organization details and category details
 const findAllActiveNews = async () => {
   return await News.find({ status: constants.WELLKNOWNSTATUS.ACTIVE })
     .sort({ createdAt: -1 })
+    .populate("category")
     .populate({
       path: "addedBy",
       populate: {
@@ -31,13 +32,14 @@ const findAllActiveNewsByAddedUser = async (userId: string) => {
     status: constants.WELLKNOWNSTATUS.ACTIVE,
     addedBy: userId,
   })
+    .sort({ createdAt: -1 })
+    .populate("category")
     .populate({
       path: "addedBy",
       populate: {
         path: "organization",
       },
-    })
-    .sort({ createdAt: -1 });
+    });
 };
 
 export default {

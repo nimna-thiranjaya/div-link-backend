@@ -6,12 +6,14 @@ import News from "./news.model";
 import commonService from "../common/common.service";
 import CustomResponse from "../util/response";
 import newsService from "./news.service";
+import categoryService from "../category/category.service";
 
 import NotFoundError from "../error/error.classes/NotFoundError";
 import BadRequestError from "../error/error.classes/BadRequestError";
 import ForbiddenError from "../error/error.classes/ForbiddenError";
 import constants from "../constant";
 
+//create News for admin
 const CreateNews = async (req: Request, res: Response) => {
   let body: any = req.body;
   let file: any = req.file;
@@ -20,6 +22,11 @@ const CreateNews = async (req: Request, res: Response) => {
   if (!file) {
     throw new BadRequestError("News image is required!");
   }
+
+  const category: any = await categoryService.findById(body.category);
+
+  if (category.name == constants.CATEGORYTYPES.NEWS)
+    throw new BadRequestError("Category type is not news!");
 
   //construct news object
   const newNews: any = new News(body);
@@ -86,7 +93,7 @@ const DeleteNews = async (req: Request, res: Response) => {
   let auth: any = req.auth;
 
   let news: any = await newsService.findById(newsId);
-  if (auth._id == news.addedBy._id)
+  if (auth._id != news.addedBy._id.toString())
     throw new ForbiddenError("You are not allow to delete this news!");
 
   if (news) {
@@ -108,12 +115,10 @@ const UpdateNews = async (req: Request, res: Response) => {
 
   let news: any = await newsService.findById(newsId);
 
-  console.log(news);
-
   if (!news) throw new NotFoundError("News not found!");
 
-  if (auth._id == news.addedBy._id)
-    throw new ForbiddenError("You are not allow to delete this news!");
+  if (auth._id != news.addedBy._id.toString())
+    throw new ForbiddenError("You are not allow to update this news!");
 
   //construct news update object expect image and
   for (let key in body) {

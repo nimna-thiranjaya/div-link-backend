@@ -1,14 +1,14 @@
 import { Router } from "express";
 import authMiddleware from "../auth/auth.middleware";
 import constants from "../constant";
-import { CreateCategory } from "./helper.controller";
+import { CreateCategory } from "./category.controller";
 
-const HelperRouter = Router();
+const CategoryRouter = Router();
 
-HelperRouter.post(
-  "/category/create",
+CategoryRouter.post(
+  "/create",
   authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
   CreateCategory
 );
 
-export default HelperRouter;
+export default CategoryRouter;
