@@ -32,13 +32,11 @@ const CreateNews = async (req: Request, res: Response) => {
   const newNews: any = new News(body);
   newNews.addedBy = auth._id;
 
-  //start mongoose session
-  const session = await startSession();
+  const session = await startSession(); //start mongoose session
 
   let createdNews = null;
   try {
-    //start transaction in session
-    session.startTransaction();
+    session.startTransaction(); //start transaction in session
 
     //upload image to cloudinary
     let uploadedObj: any = null;
@@ -53,8 +51,7 @@ const CreateNews = async (req: Request, res: Response) => {
       newNews.newsImage = uploadedObj;
     }
 
-    //save news
-    createdNews = await newsService.save(newNews, session);
+    createdNews = await newsService.save(newNews, session); //save news
 
     await session.commitTransaction();
   } catch (e) {
@@ -117,23 +114,30 @@ const UpdateNews = async (req: Request, res: Response) => {
 
   if (!news) throw new NotFoundError("News not found!");
 
+  //valudate category
+  if (body.category) {
+    const category: any = await categoryService.findById(body.category);
+
+    if (category.name == constants.CATEGORYTYPES.NEWS)
+      throw new BadRequestError("Category type is not news!");
+  }
+
   if (auth._id != news.addedBy._id.toString())
     throw new ForbiddenError("You are not allow to update this news!");
 
-  //construct news update object expect image and
+  //construct news update object expect image and addedBy
   for (let key in body) {
     if (key !== "newsImage" && key !== "addedBy") {
       news[key] = body[key];
     }
   }
 
-  //start mongoose session
-  const session = await startSession();
+  const session = await startSession(); //start mongoose session
+
   let updatedNews = null;
 
   try {
-    //start transaction in session
-    session.startTransaction();
+    session.startTransaction(); //start transaction in session
 
     //upload image to cloudinary
     let uploadedObj: any = null;
@@ -153,8 +157,7 @@ const UpdateNews = async (req: Request, res: Response) => {
       }
     }
 
-    //save news
-    updatedNews = await newsService.save(news, session);
+    updatedNews = await newsService.save(news, session); //save news
 
     await session.commitTransaction();
   } catch (e) {
