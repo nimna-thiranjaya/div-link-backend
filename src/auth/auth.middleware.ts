@@ -2,12 +2,20 @@ import jwt from "jsonwebtoken";
 import authUtil from "./auth.util";
 import UnauthorizedError from "../error/error.classes/UnauthorizedError";
 import ForbiddenError from "../error/error.classes/ForbiddenError";
-import { Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
+
+declare global {
+  namespace Express {
+    interface Request {
+      auth?: any;
+    }
+  }
+}
 
 const authorize = (rolesArray: any = []) => {
   if (!rolesArray) rolesArray = [];
 
-  return async (req: any, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     const authHeader: any = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -16,8 +24,9 @@ const authorize = (rolesArray: any = []) => {
 
     const token = authUtil.extractToken(authHeader);
 
-    if (!token) {
+    if (token) {
       let payload: any = null;
+
       try {
         payload = authUtil.verifyToken(token);
       } catch (error) {
@@ -45,4 +54,4 @@ const authorize = (rolesArray: any = []) => {
   };
 };
 
-export { authorize };
+export default { authorize };

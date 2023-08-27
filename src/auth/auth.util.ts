@@ -21,7 +21,6 @@ const signToken = (user: any) => {
 const extractToken = (token: any) => {
   let tokenArray: any[] = token.split(" ");
   if (tokenArray.length !== 2) return null;
-
   return tokenArray[1];
 };
 

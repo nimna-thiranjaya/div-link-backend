@@ -9,6 +9,7 @@ const constants = {
       USER: "user",
     },
   },
+
   WELLKNOWNSTATUS: {
     ACTIVE: 1,
     DISABLED: 0,
@@ -16,6 +17,14 @@ const constants = {
     CONFIRM: 3,
     REJECT: 4,
     DELETED: 5,
+  },
+
+  CLOUDINARY: {
+    FILE_NAME: "Dev_Link",
+  },
+
+  CATEGORYTYPES: {
+    NEWS: "news",
   },
 };
 

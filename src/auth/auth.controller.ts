@@ -13,7 +13,7 @@ const UserLogin = async (req: Request, res: Response) => {
     throw new BadRequestError("Email and password are required");
   }
 
-  const isAuthCheck: any = await authService.findById(body.email, null);
+  const isAuthCheck: any = await authService.findById(body.email);
 
   if (!isAuthCheck) throw new NotFoundError("Invalid email!");
 
