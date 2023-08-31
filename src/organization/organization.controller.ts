@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import CustomResponse from "../util/response";
 
 const GetAllOrganizations = async (req: Request, res: Response) => {
-  const organizations = await organizationService.findAll(null);
+  const organizations = await organizationService.findAll();
 
   CustomResponse(
     res,
@@ -18,7 +18,7 @@ const GetAllOrganizations = async (req: Request, res: Response) => {
 const GetOrganizationById = async (req: Request, res: Response) => {
   const id = req.params.id;
 
-  const organization = await organizationService.findById(id, null);
+  const organization = await organizationService.findById(id);
 
   CustomResponse(
     res,

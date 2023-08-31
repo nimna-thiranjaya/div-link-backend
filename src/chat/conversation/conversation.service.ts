@@ -5,7 +5,6 @@ const save = async (data: any, session: any) => {
   return await data.save({ session });
 };
 
-//get active conversation by id
 const findById = async (id: string) => {
   return await Conversation.findOne({
     _id: id,
@@ -28,9 +27,10 @@ const findConversationsByMember = async (member: string) => {
     $or: [{ memberOne: member }, { memberTwo: member }],
     status: constants.WELLKNOWNSTATUS.ACTIVE,
   })
-    .populate("memberOne")
-    .populate("memberTwo")
-    .populate("company");
+    .populate("memberOne", "fullName email")
+    .populate("memberTwo", "fullName email")
+    .populate("organization", "orgName orgEmail orgImage")
+    .sort({ lastUpdated: -1 });
 };
 
 export default {

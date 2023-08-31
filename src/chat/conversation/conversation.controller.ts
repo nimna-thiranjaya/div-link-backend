@@ -9,28 +9,39 @@ import CustomResponse from "../../util/response";
 
 import NotFoundError from "../../error/error.classes/NotFoundError";
 import BadRequestError from "../../error/error.classes/BadRequestError";
+import organizationService from "../../organization/organization.service";
+import ConflictError from "../../error/error.classes/ConflictError";
 
 const CreateConversation = async (req: Request, res: Response) => {
   const auth: any = req.auth;
   const body: any = req.body;
 
-  const member: any = await userService.findById(body.memberTwo); // validate member
+  const organization: any = await organizationService.findById(
+    body.organization
+  );
 
-  if (!member) throw new NotFoundError("Member not found!");
+  if (!organization) throw new NotFoundError("Organization not found!");
 
-  //check if conversation already exists
+  const memberTwo: any = await userService.findByOrganization(
+    body.organization
+  );
+
+  if (!memberTwo) throw new NotFoundError("Member not found!");
+
   const conversationExists: any = await conversationService.findByMembers(
     auth._id,
-    body.memberTwo
+    memberTwo._id
   );
 
   if (conversationExists)
-    throw new BadRequestError("Conversation already exists!");
+    throw new ConflictError("Conversation already exists!");
 
   //construct conversation object
-  const newConversation: any = new conversation(body);
-  newConversation.memberOne = auth._id;
-  newConversation.company = member.organization;
+  const newConversation = new conversation({
+    memberOne: auth._id,
+    memberTwo: memberTwo._id,
+    organization: organization._id,
+  });
 
   const session = await startSession(); //start mongoose session
 
@@ -45,7 +56,7 @@ const CreateConversation = async (req: Request, res: Response) => {
 
     await session.commitTransaction();
   } catch (e) {
-    session.abortTransaction();
+    await session.abortTransaction();
     throw e;
   } finally {
     session.endSession();

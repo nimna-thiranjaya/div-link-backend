@@ -15,11 +15,17 @@ const ConverSationSchema = new mongoose.Schema(
       required: [true, "MemberTwo is required"],
     },
 
-    company: {
+    organization: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Company",
-      required: [true, "Company is required"],
+      ref: "Organization",
+      required: [true, "Organization is required"],
     },
+
+    lastUpdated: {
+      type: Date,
+      default: Date.now,
+    },
+
     status: {
       type: Number,
       default: constants.WELLKNOWNSTATUS.ACTIVE,

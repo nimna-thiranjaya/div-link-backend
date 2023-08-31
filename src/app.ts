@@ -21,6 +21,7 @@ import AppointmentRouter from "./appointment/appointment.route";
 import NewsRouter from "./news/news.route";
 import CategoryRouter from "./category/category.route";
 import ConversationRouter from "./chat/conversation/conversation.route";
+import MessageRouter from "./chat/message/message.route";
 
 //define routes
 app.use(constants.API.PREFIX.concat("/user"), UserRouter);
@@ -30,6 +31,7 @@ app.use(constants.API.PREFIX.concat("/appointment"), AppointmentRouter);
 app.use(constants.API.PREFIX.concat("/news"), NewsRouter);
 app.use(constants.API.PREFIX.concat("/category"), CategoryRouter);
 app.use(constants.API.PREFIX.concat("/conversation"), ConversationRouter);
+app.use(constants.API.PREFIX.concat("/message"), MessageRouter);
 
 //error handler middleware
 app.use(errorHandlerMiddleware);

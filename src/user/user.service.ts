@@ -12,4 +12,8 @@ const findById = async (id: string) => {
   return await User.findById(id).populate("organization");
 };
 
-export default { save, findByEmail, findById };
+const findByOrganization = async (organization: string) => {
+  return await User.findOne({ organization: organization });
+};
+
+export default { save, findByEmail, findById, findByOrganization };
