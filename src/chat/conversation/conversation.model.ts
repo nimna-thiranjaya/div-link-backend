@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import constants from "../../constant";
 
 const ConverSationSchema = new mongoose.Schema(
   {
@@ -18,6 +19,10 @@ const ConverSationSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
       required: [true, "Company is required"],
+    },
+    status: {
+      type: Number,
+      default: constants.WELLKNOWNSTATUS.ACTIVE,
     },
   },
   {
