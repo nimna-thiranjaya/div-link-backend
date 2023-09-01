@@ -25,6 +25,7 @@ const constants = {
 
   CATEGORYTYPES: {
     NEWS: "news",
+    JOB: "job",
   },
 };
 
