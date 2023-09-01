@@ -26,3 +26,5 @@ const JobSchema = new mongoose.Schema({
     ref: "Organization",
   },
 });
+
+export default mongoose.model("Job", JobSchema);
