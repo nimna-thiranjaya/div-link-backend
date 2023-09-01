@@ -1,3 +1,4 @@
+import constants from "../constant";
 import Organization from "./organization.model";
 
 const save = async (org: any, session: any) => {
@@ -9,6 +10,8 @@ const findById = async (id: string) => {
 };
 
 const findAll = async () => {
-  return await Organization.find().sort({ createdAt: 1 });
+  return await Organization.find({
+    status: constants.WELLKNOWNSTATUS.ACTIVE,
+  }).sort({ createdAt: 1 });
 };
 export default { save, findById, findAll };
