@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import InternalServerError from "../error/error.classes/InternalServerError";
+import NotFoundError from "../error/error.classes/NotFoundError";
 
 // Mail server configurations
 const transporter = nodemailer.createTransport({
@@ -13,12 +14,16 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async (email: string, subject: string, text: string) => {
+const sendEmail = async (email: string, subject: string, htmlBody: string) => {
+  if (!email) throw new NotFoundError("Email is required!");
+  if (!subject) throw new NotFoundError("Subject is required!");
+  if (!htmlBody) throw new NotFoundError("HTML body is required!");
+
   let mailOptions = {
     from: process.env.SERVER_EMAIL,
     to: email,
     subject: subject,
-    text: text,
+    html: htmlBody,
   };
 
   transporter.sendMail(mailOptions, (err: any, data: any) => {
