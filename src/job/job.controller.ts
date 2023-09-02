@@ -63,4 +63,58 @@ const GetAllJobs = async (req: Request, res: Response) => {
   CustomResponse(res, true, StatusCodes.OK, "Jobs fetched successfully", jobs);
 };
 
-export { PublishJob, GetAllJobs };
+const UpdateJob = async (req: Request, res: Response) => {
+  const jobId = req.params.jobId;
+  const auth: any = req.auth;
+  const body: any = req.body;
+
+  const job: any = await jobService.findById(jobId);
+
+  if (!job) throw new NotFoundError("Job not found!");
+
+  if (job.addedBy.toString() !== auth._id.toString())
+    throw new NotFoundError("You are not authorized to update this job!");
+
+  //construct the update job object
+  for (let key in body) {
+    if (key !== "addedBy") {
+      job[key] = body[key];
+    }
+  }
+
+  let updatedJob: any = null;
+
+  try {
+    updatedJob = await jobService.save(job, null);
+  } catch (e) {
+    throw e;
+  }
+
+  CustomResponse(
+    res,
+    true,
+    StatusCodes.OK,
+    "Job updated successfully!",
+    updatedJob
+  );
+};
+
+const DeleteJob = async (req: Request, res: Response) => {
+  const jobId = req.params.jobId;
+  const auth: any = req.auth;
+
+  const job: any = await jobService.findById(jobId);
+
+  if (!job) throw new NotFoundError("Job not found!");
+
+  if (job.addedBy.toString() !== auth._id.toString())
+    throw new NotFoundError("You are not authorized to delete this job!");
+
+  job.status = constants.WELLKNOWNSTATUS.DELETED;
+
+  await jobService.save(job, null);
+
+  CustomResponse(res, true, StatusCodes.OK, "Job deleted successfully!", {});
+};
+
+export { PublishJob, GetAllJobs, UpdateJob, DeleteJob };

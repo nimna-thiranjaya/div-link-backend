@@ -2,7 +2,11 @@ import Job from "./job.model";
 import constants from "../constant";
 
 const save = async (job: any, session: any) => {
-  return await job.save({ session });
+  if (session) {
+    return await job.save({ session });
+  } else {
+    return await job.save();
+  }
 };
 
 const findAllJobs = async () => {
@@ -24,4 +28,11 @@ const findAllJobsByAddedBy = async (addedBy: string) => {
     .sort({ createdAt: -1 });
 };
 
-export default { save, findAllJobs, findAllJobsByAddedBy };
+const findById = async (id: string) => {
+  return Job.findOne({
+    _id: id,
+    status: constants.WELLKNOWNSTATUS.ACTIVE,
+  });
+};
+
+export default { save, findAllJobs, findAllJobsByAddedBy, findById };

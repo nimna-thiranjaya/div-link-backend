@@ -2,7 +2,7 @@ import { Router } from "express";
 import authMiddleware from "../auth/auth.middleware";
 import constants from "../constant";
 
-import { PublishJob, GetAllJobs } from "./job.controller";
+import { PublishJob, GetAllJobs, UpdateJob, DeleteJob } from "./job.controller";
 
 const JobRouter = Router();
 
@@ -21,4 +21,15 @@ JobRouter.get(
   GetAllJobs
 );
 
+JobRouter.patch(
+  "/update/:jobId",
+  authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
+  UpdateJob
+);
+
+JobRouter.put(
+  "/delete/:jobId",
+  authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
+  DeleteJob
+);
 export default JobRouter;
