@@ -37,6 +37,25 @@ const UserSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Organization",
     },
+
+    savedJobs: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Job",
+        },
+      ],
+    },
+
+    appliedJobs: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Job",
+        },
+      ],
+    },
+
     status: {
       type: Number,
       default: constants.WELLKNOWNSTATUS.ACTIVE,

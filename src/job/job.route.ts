@@ -2,7 +2,13 @@ import { Router } from "express";
 import authMiddleware from "../auth/auth.middleware";
 import constants from "../constant";
 
-import { PublishJob, GetAllJobs, UpdateJob, DeleteJob } from "./job.controller";
+import {
+  PublishJob,
+  GetAllJobs,
+  UpdateJob,
+  DeleteJob,
+  ApplyForJob,
+} from "./job.controller";
 
 const JobRouter = Router();
 
@@ -31,5 +37,11 @@ JobRouter.put(
   "/delete/:jobId",
   authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
   DeleteJob
+);
+
+JobRouter.post(
+  "/apply/:jobId",
+  authMiddleware.authorize([constants.USER.ROLES.USER]),
+  ApplyForJob
 );
 export default JobRouter;

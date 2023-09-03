@@ -1,0 +1,916 @@
+{
+	"info": {
+		"_postman_id": "6a01efcd-ef0c-4881-85a3-3d85515f1fe7",
+		"name": "DEV-LINK",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17256142",
+		"_collection_link": "https://lunar-space-463498.postman.co/workspace/Recruitments-Web-Application.-~9e5095d8-552e-45a1-ba04-55d263594dee/collection/17256142-6a01efcd-ef0c-4881-85a3-3d85515f1fe7?action=share&source=collection_link&creator=17256142"
+	},
+	"item": [
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "User Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\" : {\n        \"fullName\" : \"Nimna Thiraanjaya\",\n        \"email\" : \"nimna1@gmail.com\",\n        \"password\" : \"Nimna@123\",\n        \"role\" : \"admin\"\n    },\n    \"organization\" : {\n        \"orgName\" : \"test org\",\n        \"orgEmail\" : \"org@gmail.com\",\n        \"orgAddress\" : \"Ganemulla\",\n        \"description\" : \"test org description\",\n        \"country\" : \"Sri Lanka\",\n        \"orgImage\" : \"test image\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/api/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"nimna1@gmail.com\",\n    \"password\" : \"Nimna@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/auth/login",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU0ZDYyZTNhY2RhYTE0OTZjZDUxM2MiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTI4MTQxMjksImV4cCI6MTY5MzQxODkyOX0.ufsuUpVafiTtr1wKIkjXYo4N7TtQ46-iJqvuBTIG560",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/user/profile",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "NEWS",
+			"item": [
+				{
+					"name": "Create News",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU0ZDYyZTNhY2RhYTE0OTZjZDUxM2MiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTI4MTQxMjksImV4cCI6MTY5MzQxODkyOX0.ufsuUpVafiTtr1wKIkjXYo4N7TtQ46-iJqvuBTIG560",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "test title 1",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "64eaf5224b77b2ddf24cfabc",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "test content 1",
+									"type": "text"
+								},
+								{
+									"key": "newsImage",
+									"type": "file",
+									"src": "/home/nimna-thiranjaya/Downloads/Certification-bro.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/news/create",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"news",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update News",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4ZjBkNWM2NDU2Y2Q1MzIyNmYwZDYiLCJlbWFpbCI6Im5pbW5hNEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMxMjI1NzEsImV4cCI6MTY5MzcyNzM3MX0.Ttc2URiWDo-IR2Wdxep2HNcUlk5QeviyoDCjS4xLq2w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "News Titele 01 updated 2",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "News Category",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "content",
+									"value": "Discription",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "newsImage",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/news/updateNews/64eafeae7f71baf5fbba6e43",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"news",
+								"updateNews",
+								"64eafeae7f71baf5fbba6e43"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all active news for user/ admin",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU0ZDYyZTNhY2RhYTE0OTZjZDUxM2MiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMwMjY5ODMsImV4cCI6MTY5MzYzMTc4M30.pZ7DjmCnEbrtEE_X2LC_EFVIPvy9ysCbvlOmyuXH00A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/news/getAllActiveNews",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"news",
+								"getAllActiveNews"
+							]
+						},
+						"description": "**Token Required**\n\nFor User - get all the active news as respone\n\nFor Admin - get all news that posted by loged admin as response"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete News",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4ZjBkNWM2NDU2Y2Q1MzIyNmYwZDYiLCJlbWFpbCI6Im5pbW5hNEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMxMjI1NzEsImV4cCI6MTY5MzcyNzM3MX0.Ttc2URiWDo-IR2Wdxep2HNcUlk5QeviyoDCjS4xLq2w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/news/deleteNews/64eafeae7f71baf5fbba6e43",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"news",
+								"deleteNews",
+								"64eafeae7f71baf5fbba6e43"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ORGANIZATIONS",
+			"item": [
+				{
+					"name": "Get All Organizations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/organization/getAll",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"organization",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged User Org",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMyYjk1OGVhOWJhYTY3OGVjOWUiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTM1OTIzMzcsImV4cCI6MTY5NDE5NzEzN30.AtAvBIqadGZdSfvrymxpYJiuAVhZa0DyXdLa2u3LFCw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/organization/getUserOrg",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"organization",
+								"getUserOrg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Organization By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/organization/getOrg/64f0ac2b958ea9baa678eca0",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"organization",
+								"getOrg",
+								"64f0ac2b958ea9baa678eca0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "APPOINTMENT",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/nimna-thiranjaya/Downloads/Certification-bro.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/appointment/create",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"appointment",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CATEGORY",
+			"item": [
+				{
+					"name": "Add New Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMyYjk1OGVhOWJhYTY3OGVjOWUiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTM1OTEzMTMsImV4cCI6MTY5NDE5NjExM30.IKgaLnq4qA9tUrL27-C9TnW7pgbwqrDOC_US0HjhaJ0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Remote\",\n    \"description\" : \"Remote\",\n    \"categoryType\" : \"job\"\n}\n\n// For News Category : news \n// For types of jobs : job\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/category/create",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"category",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4ZjBkNWM2NDU2Y2Q1MzIyNmYwZDYiLCJlbWFpbCI6Im5pbW5hNEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMxMjI1NzEsImV4cCI6MTY5MzcyNzM3MX0.Ttc2URiWDo-IR2Wdxep2HNcUlk5QeviyoDCjS4xLq2w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/category/deleteCategory/64eb0795fc6f591a91a759bf",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"category",
+								"deleteCategory",
+								"64eb0795fc6f591a91a759bf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Categories by type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/category/getAllCategories/?type=job",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"category",
+								"getAllCategories",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "job"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4ZjBkNWM2NDU2Y2Q1MzIyNmYwZDYiLCJlbWFpbCI6Im5pbW5hNEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTMxMjI1NzEsImV4cCI6MTY5MzcyNzM3MX0.Ttc2URiWDo-IR2Wdxep2HNcUlk5QeviyoDCjS4xLq2w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Test \",\n    \"description\" : \"Test\",\n    \"categoryType\" : \"news\"\n}\n\n\n// cant update categoryType from this api\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/category/updateCategory/64eb0795fc6f591a91a759bf",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"category",
+								"updateCategory",
+								"64eb0795fc6f591a91a759bf"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CHAT",
+			"item": [
+				{
+					"name": "Create conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMxMjk1OGVhOWJhYTY3OGVjOWEiLCJlbWFpbCI6Im5pbW5hQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjkzNDk0Mzc3LCJleHAiOjE2OTQwOTkxNzd9.t4SPhgD9kI9JokLydKbUFXJhAKtrnYeQIXoU1dbYgh8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"organization\" : \"64f0ac2b958ea9baa678eca0\"\n} \n\n//Only user can create a conversation so membertwo is admin ID",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/conversation/create",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"conversation",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Coversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMxMjk1OGVhOWJhYTY3OGVjOWEiLCJlbWFpbCI6Im5pbW5hQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjkzNDk0Mzc3LCJleHAiOjE2OTQwOTkxNzd9.t4SPhgD9kI9JokLydKbUFXJhAKtrnYeQIXoU1dbYgh8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/conversation/all-conversations",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"conversation",
+								"all-conversations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMxMjk1OGVhOWJhYTY3OGVjOWEiLCJlbWFpbCI6Im5pbW5hQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjkzNDk0Mzc3LCJleHAiOjE2OTQwOTkxNzd9.t4SPhgD9kI9JokLydKbUFXJhAKtrnYeQIXoU1dbYgh8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\" : \"hiiii\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/message/send/64f0c596d073b920bd72e352",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"message",
+								"send",
+								"64f0c596d073b920bd72e352"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All messages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMxMjk1OGVhOWJhYTY3OGVjOWEiLCJlbWFpbCI6Im5pbW5hQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjkzNDk0Mzc3LCJleHAiOjE2OTQwOTkxNzd9.t4SPhgD9kI9JokLydKbUFXJhAKtrnYeQIXoU1dbYgh8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/message/all-messages/64f0c596d073b920bd72e352",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"message",
+								"all-messages",
+								"64f0c596d073b920bd72e352"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMxMjk1OGVhOWJhYTY3OGVjOWEiLCJlbWFpbCI6Im5pbW5hQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjkzNDk0Mzc3LCJleHAiOjE2OTQwOTkxNzd9.t4SPhgD9kI9JokLydKbUFXJhAKtrnYeQIXoU1dbYgh8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/message/delete/64f0cb3b9157456032125ee2",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"message",
+								"delete",
+								"64f0cb3b9157456032125ee2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JOB",
+			"item": [
+				{
+					"name": "Publish Job",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMyYjk1OGVhOWJhYTY3OGVjOWUiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTM1OTEzMTMsImV4cCI6MTY5NDE5NjExM30.IKgaLnq4qA9tUrL27-C9TnW7pgbwqrDOC_US0HjhaJ0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"Test Title\",\n    \"type\" : \"64f22756460e1b0a95ad43df\",\n    \"avgAnnualSalary\" : \"70000\",\n    \"description\" : \"Test Discription\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/job/create",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"job",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Jobs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMyYjk1OGVhOWJhYTY3OGVjOWUiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTM1OTIzMzcsImV4cCI6MTY5NDE5NzEzN30.AtAvBIqadGZdSfvrymxpYJiuAVhZa0DyXdLa2u3LFCw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/job/allJobs",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"job",
+								"allJobs"
+							]
+						},
+						"description": "Token required\n\nif user get all active jobs\n\nif admin get all added active jobs by logged admin"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Jobs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMyYjk1OGVhOWJhYTY3OGVjOWUiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTM1OTIzMzcsImV4cCI6MTY5NDE5NzEzN30.AtAvBIqadGZdSfvrymxpYJiuAVhZa0DyXdLa2u3LFCw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"Test Title 1\",\n    \"type\" : \"64f22756460e1b0a95ad43df\",\n    \"avgAnnualSalary\" : 200000,\n    \"description\" : \"Test Discription 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/job/update/64f347706d82a9f6d07570b9",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"job",
+								"update",
+								"64f347706d82a9f6d07570b9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Jobs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMyYjk1OGVhOWJhYTY3OGVjOWUiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTM1OTIzMzcsImV4cCI6MTY5NDE5NzEzN30.AtAvBIqadGZdSfvrymxpYJiuAVhZa0DyXdLa2u3LFCw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/job/delete/64f373f12db8bf90054ef3bf",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"job",
+								"delete",
+								"64f373f12db8bf90054ef3bf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apply for Job",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGYwYWMyYjk1OGVhOWJhYTY3OGVjOWUiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTM1OTIzMzcsImV4cCI6MTY5NDE5NzEzN30.AtAvBIqadGZdSfvrymxpYJiuAVhZa0DyXdLa2u3LFCw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/job/apply/64f347706d82a9f6d07570b9",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"job",
+								"apply",
+								"64f347706d82a9f6d07570b9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Saved Job",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Remove From Save",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU0ZDVlYTNhY2RhYTE0OTZjZDUxMzYiLCJlbWFpbCI6Im5pbW5hQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjkyNzI0NDk0LCJleHAiOjE2OTMzMjkyOTR9.zgLU0hgqMfpZ4wprBcL5ygw7jUDFqLRl8Zw4uCmNTE8",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BaseUrl",
+			"value": "http://localhost:8080/api/v1"
+		},
+		{
+			"key": "session",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU0ZDYyZTNhY2RhYTE0OTZjZDUxM2MiLCJlbWFpbCI6Im5pbW5hMUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTI4MTQxMjksImV4cCI6MTY5MzQxODkyOX0.ufsuUpVafiTtr1wKIkjXYo4N7TtQ46-iJqvuBTIG560"
+		}
+	]
+}

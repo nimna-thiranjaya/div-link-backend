@@ -117,4 +117,8 @@ const DeleteJob = async (req: Request, res: Response) => {
   CustomResponse(res, true, StatusCodes.OK, "Job deleted successfully!", {});
 };
 
-export { PublishJob, GetAllJobs, UpdateJob, DeleteJob };
+const ApplyForJob = async (req: Request, res: Response) => {
+  console.log("ApplyForJob");
+};
+
+export { PublishJob, GetAllJobs, UpdateJob, DeleteJob, ApplyForJob };
