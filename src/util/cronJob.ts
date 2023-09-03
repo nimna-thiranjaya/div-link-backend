@@ -13,7 +13,7 @@ const sendAppointmentReminders = () => {
       await sendEmail(
         "lavanpasindu123@gmail.com",
         "Appointment Reminder",
-        `<h1>Appointment Reminder</h1>`,
+        `<h1>Appointment Reminder last</h1>`,
         null
       );
     });
