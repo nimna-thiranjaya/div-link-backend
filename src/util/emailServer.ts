@@ -14,25 +14,40 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async (email: string, subject: string, htmlBody: string) => {
+const sendEmail = async (
+  email: string,
+  subject: string,
+  htmlBody: string,
+  attachment: any
+) => {
   if (!email) throw new NotFoundError("Email is required!");
   if (!subject) throw new NotFoundError("Subject is required!");
   if (!htmlBody) throw new NotFoundError("HTML body is required!");
 
-  let mailOptions = {
+  let mailOptions: any = {
     from: process.env.SERVER_EMAIL,
     to: email,
     subject: subject,
     html: htmlBody,
   };
 
+  if (attachment) {
+    mailOptions.attachments = [
+      {
+        filename: attachment.originalname,
+        content: attachment.buffer,
+        contentType: attachment.mimetype,
+      },
+    ];
+  }
+
   transporter.sendMail(mailOptions, (err: any, data: any) => {
     if (err) {
-      throw new InternalServerError("Error sending email!");
+      console.log(err);
     } else {
       return data;
     }
   });
 };
 
-export default sendEmail;
+export { sendEmail };

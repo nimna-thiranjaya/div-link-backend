@@ -1,6 +1,7 @@
 import e, { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { startSession } from "mongoose";
+import { sendEmail } from "../util/emailServer";
 
 import Job from "./job.model";
 import userService from "../user/user.service";
@@ -9,6 +10,7 @@ import constants from "../constant";
 
 import CustomResponse from "../util/response";
 import NotFoundError from "../error/error.classes/NotFoundError";
+import jobEmailTemplate from "./email-templates/jobEmail.templates";
 
 const PublishJob = async (req: Request, res: Response) => {
   const auth: any = req.auth;
@@ -118,7 +120,146 @@ const DeleteJob = async (req: Request, res: Response) => {
 };
 
 const ApplyForJob = async (req: Request, res: Response) => {
-  console.log("ApplyForJob");
+  const jobId = req.params.jobId;
+  const body: any = req.body;
+  const file: any = req.file;
+  const auth: any = req.auth;
+
+  if (!file) throw new NotFoundError("Please upload a resume!"); //validate file
+
+  const job: any = await jobService.findById(jobId); //check if the job exists
+
+  if (!job) throw new NotFoundError("Job not found!");
+
+  const user: any = await userService.findById(auth._id);
+
+  let isUserApplied = user.appliedJobs.includes(jobId); //check if the user has already applied for this job
+
+  if (isUserApplied) throw new NotFoundError("You have already applied!");
+
+  //construct the user object
+  user.appliedJobs.push(jobId);
+
+  try {
+    await userService.save(user, null);
+  } catch (e) {
+    throw e;
+  }
+
+  let data: any = {
+    fullName: body.fullName,
+    mobileNumber: body.mobileNumber,
+    title: job.title,
+    companyName: job.organization.orgName,
+  };
+
+  let companyMailBody = jobEmailTemplate.ApplyJobMail(data);
+  let userMailBody = jobEmailTemplate.ApplyJobResponseMail(data);
+
+  //send email to the company
+  await sendEmail(
+    job.organization.orgEmail,
+    "Job Application Request Alert",
+    companyMailBody,
+    file
+  );
+
+  //send email to the user
+  await sendEmail(body.email, "Job Application Response", userMailBody, null);
+
+  CustomResponse(res, true, StatusCodes.OK, "Job applied successfully!", {});
 };
 
-export { PublishJob, GetAllJobs, UpdateJob, DeleteJob, ApplyForJob };
+const SaveJob = async (req: Request, res: Response) => {
+  const jobId = req.params.jobId;
+  const auth: any = req.auth;
+
+  const job: any = await jobService.findById(jobId);
+
+  if (!job) throw new NotFoundError("Job not found!");
+
+  const user: any = await userService.findById(auth._id);
+
+  let isUserSaved = user.savedJobs.includes(jobId);
+
+  if (isUserSaved) throw new NotFoundError("You have already saved this job!");
+
+  //construct the user object
+  user.savedJobs.push(jobId);
+
+  try {
+    await userService.save(user, null);
+  } catch (e) {
+    throw e;
+  }
+
+  CustomResponse(res, true, StatusCodes.OK, "Job saved successfully!", {});
+};
+
+const RemoveSavedJob = async (req: Request, res: Response) => {
+  const jobId = req.params.jobId;
+  const auth: any = req.auth;
+
+  const job: any = await jobService.findById(jobId);
+
+  if (!job) throw new NotFoundError("Job not found!");
+
+  const user: any = await userService.findById(auth._id);
+
+  let isUserSaved = user.savedJobs.includes(jobId);
+
+  if (!isUserSaved) throw new NotFoundError("You have not saved this job!");
+
+  //construct the user object
+  user.savedJobs = user.savedJobs.filter(
+    (job: any) => job.toString() !== jobId
+  );
+
+  try {
+    await userService.save(user, null);
+  } catch (e) {
+    throw e;
+  }
+
+  CustomResponse(res, true, StatusCodes.OK, "Job removed successfully!", {});
+};
+
+const GetAllAppliedJobs = async (req: Request, res: Response) => {
+  const auth: any = req.auth;
+
+  let appliedJobs: any = await userService.findAllAppliedJobs(auth._id);
+
+  CustomResponse(
+    res,
+    true,
+    StatusCodes.OK,
+    "Applied jobs fetched successfully!",
+    appliedJobs.appliedJobs
+  );
+};
+
+const GetAllSavedJobs = async (req: Request, res: Response) => {
+  const auth: any = req.auth;
+
+  let savedJobs: any = await userService.findAllSavedJobs(auth._id);
+
+  CustomResponse(
+    res,
+    true,
+    StatusCodes.OK,
+    "Saved jobs fetched successfully!",
+    savedJobs.savedJobs
+  );
+};
+
+export {
+  PublishJob,
+  GetAllJobs,
+  UpdateJob,
+  DeleteJob,
+  ApplyForJob,
+  SaveJob,
+  RemoveSavedJob,
+  GetAllAppliedJobs,
+  GetAllSavedJobs,
+};

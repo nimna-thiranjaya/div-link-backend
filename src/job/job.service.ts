@@ -32,7 +32,7 @@ const findById = async (id: string) => {
   return Job.findOne({
     _id: id,
     status: constants.WELLKNOWNSTATUS.ACTIVE,
-  });
+  }).populate("organization");
 };
 
 export default { save, findAllJobs, findAllJobsByAddedBy, findById };

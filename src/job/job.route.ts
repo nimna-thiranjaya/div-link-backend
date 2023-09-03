@@ -8,7 +8,12 @@ import {
   UpdateJob,
   DeleteJob,
   ApplyForJob,
+  SaveJob,
+  RemoveSavedJob,
+  GetAllAppliedJobs,
+  GetAllSavedJobs,
 } from "./job.controller";
+import commonMiddleware from "../common/common.middleware";
 
 const JobRouter = Router();
 
@@ -42,6 +47,31 @@ JobRouter.put(
 JobRouter.post(
   "/apply/:jobId",
   authMiddleware.authorize([constants.USER.ROLES.USER]),
+  commonMiddleware.multerUploader.single("resume"),
   ApplyForJob
+);
+
+JobRouter.put(
+  "/save/:jobId",
+  authMiddleware.authorize([constants.USER.ROLES.USER]),
+  SaveJob
+);
+
+JobRouter.put(
+  "/removeSave/:jobId",
+  authMiddleware.authorize([constants.USER.ROLES.USER]),
+  RemoveSavedJob
+);
+
+JobRouter.get(
+  "/getAppliedJobs",
+  authMiddleware.authorize([constants.USER.ROLES.USER]),
+  GetAllAppliedJobs
+);
+
+JobRouter.get(
+  "/getSavedJobs",
+  authMiddleware.authorize([constants.USER.ROLES.USER]),
+  GetAllSavedJobs
 );
 export default JobRouter;
