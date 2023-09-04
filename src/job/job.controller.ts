@@ -10,7 +10,7 @@ import constants from "../constant";
 
 import CustomResponse from "../util/response";
 import NotFoundError from "../error/error.classes/NotFoundError";
-import jobEmailTemplate from "./email-templates/jobEmail.templates";
+import emailTemplates from "../util/email-templates/email.templates";
 
 const PublishJob = async (req: Request, res: Response) => {
   const auth: any = req.auth;
@@ -153,8 +153,8 @@ const ApplyForJob = async (req: Request, res: Response) => {
     companyName: job.organization.orgName,
   };
 
-  let companyMailBody = jobEmailTemplate.ApplyJobMail(data);
-  let userMailBody = jobEmailTemplate.ApplyJobResponseMail(data);
+  let companyMailBody = emailTemplates.ApplyJobMail(data);
+  let userMailBody = emailTemplates.ApplyJobResponseMail(data);
 
   //send email to the company
   await sendEmail(

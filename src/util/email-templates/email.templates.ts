@@ -1,3 +1,4 @@
+// Job Email templates
 const ApplyJobResponseMail = (data: any) => {
   return `<!DOCTYPE html>
     <html>
@@ -80,7 +81,60 @@ const ApplyJobMail = (data: any) => {
         </html>`;
 };
 
+// Appointment Email templates
+const NewAppointmentAlertTemplate = (data: any) => {
+  return `
+          <div>
+          <h1>Hi ${data.orgName},</h1>
+          <p>You got new appointment</p>
+          <p>Appointment Details:</p>
+          <p>Date: ${data.appointmentDate}</p>
+          <p>Time: ${data.appointmentTime}</p>
+          </div>
+      `;
+};
+
+const AppointmentApprovedTemplate = (data: any) => {
+  return `
+          <div>
+          <h1>Hi ${data.userName},</h1>
+          <p>Your appointment has been approved</p>
+          <p>Appointment Details:</p>
+          <p>Date: ${data.appointmentDate}</p>
+          <p>Time: ${data.appointmentTime}</p>
+          </div>
+      `;
+};
+
+const AppointmentRejectedTemplate = (data: any) => {
+  return `
+              <div>
+              <h1>Hi ${data.userName},</h1>
+              <p>Your appointment has been rejected</p>
+              <p>Appointment Details:</p>
+              <p>Date: ${data.appointmentDate}</p>
+              <p>Time: ${data.appointmentTime}</p>
+              </div>
+          `;
+};
+
+const AppointmentReminderTemplate = (data: any) => {
+  return `
+                <div>
+                <h1>Hi ${data.userName},</h1>
+                <p>Your appointment is due in Today</p>
+                <p>Appointment Details:</p>
+                <p>Date: ${data.appointmentDate}</p>
+                <p>Time: ${data.appointmentTime}</p>
+                </div>
+            `;
+};
+
 export default {
   ApplyJobResponseMail,
   ApplyJobMail,
+  AppointmentRejectedTemplate,
+  AppointmentApprovedTemplate,
+  NewAppointmentAlertTemplate,
+  AppointmentReminderTemplate,
 };
