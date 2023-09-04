@@ -25,11 +25,35 @@ const timeSlots = [
   },
   {
     id: 7,
-    timeSlot: "03:00 PM - 3:30 PM",
+    timeSlot: "12:00 PM - 12:30 PM",
   },
   {
     id: 8,
+    timeSlot: "12:30 PM - 1:00 PM",
+  },
+  {
+    id: 9,
+    timeSlot: "01:00 PM - 1:30 PM",
+  },
+  {
+    id: 10,
+    timeSlot: "01:30 PM - 2:00 PM",
+  },
+  {
+    id: 11,
+    timeSlot: "03:00 PM - 3:30 PM",
+  },
+  {
+    id: 12,
     timeSlot: "03:30 PM - 4:00 PM",
+  },
+  {
+    id: 13,
+    timeSlot: "04:00 PM - 4:30 PM",
+  },
+  {
+    id: 14,
+    timeSlot: "04:30 PM - 5:00 PM",
   },
 ];
 
