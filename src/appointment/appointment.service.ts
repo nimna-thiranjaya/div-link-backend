@@ -81,6 +81,13 @@ const findById = (id: any) => {
   });
 };
 
+const findByDateAndApproved = (date: any) => {
+  return Appointment.find({
+    appointmentDate: date,
+    status: constants.WELLKNOWNSTATUS.APPROVE,
+  });
+};
+
 export default {
   save,
   findAllByOrgAndDateAndTimeSlot,
@@ -88,4 +95,5 @@ export default {
   findAllByAddedBy,
   findAllByOrg,
   findById,
+  findByDateAndApproved,
 };

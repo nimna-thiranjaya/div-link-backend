@@ -5,11 +5,7 @@ import { timeSlots } from "./appointment.util";
 import appointmentService from "./appointment.service";
 import organizationService from "../organization/organization.service";
 import userService from "../user/user.service";
-import {
-  appointmentApprovedTemplate,
-  appointmentRejectedTemplate,
-  newAppointmentAlertTemplate,
-} from "./email-templates/email.templates";
+import emailTemplates from "../util/email-templates/email.templates";
 
 import Appointment from "./appointment.model";
 import CustomResponse from "../util/response";
@@ -59,8 +55,7 @@ const CreateAppointment = async (req: Request, res: Response) => {
         return time.id === newAppointment.appointmentTime;
       })?.timeSlot,
     };
-
-    let htmlBody = newAppointmentAlertTemplate(data);
+    let htmlBody = emailTemplates.NewAppointmentAlertTemplate(data);
 
     await sendEmail(
       organization.orgEmail,
@@ -166,7 +161,7 @@ const ApproveOrRejectAppointment = async (req: Request, res: Response) => {
         appointment.status = constants.WELLKNOWNSTATUS.APPROVE;
         await appointmentService.save(appointment, null);
 
-        htmlBody = appointmentApprovedTemplate(data);
+        htmlBody = emailTemplates.AppointmentApprovedTemplate(data);
 
         await sendEmail(
           addedUser.email,
@@ -188,7 +183,7 @@ const ApproveOrRejectAppointment = async (req: Request, res: Response) => {
         appointment.status = constants.WELLKNOWNSTATUS.REJECT;
         await appointmentService.save(appointment, null);
 
-        htmlBody = appointmentRejectedTemplate(data);
+        htmlBody = emailTemplates.AppointmentRejectedTemplate(data);
 
         await sendEmail(
           addedUser.email,
