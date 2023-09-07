@@ -1,3 +1,6 @@
+import constants from "../constant";
+import appointmentService from "./appointment.service";
+
 const timeSlots = [
   {
     id: 1,
@@ -57,4 +60,13 @@ const timeSlots = [
   },
 ];
 
-export { timeSlots };
+const disableExpiredAppointments = async () => {
+  let appointments = await appointmentService.findExpiredAppointments();
+
+  appointments.forEach(async (appointment: any) => {
+    appointment.status = constants.WELLKNOWNSTATUS.DISABLED;
+    await appointment.save();
+  });
+};
+
+export { timeSlots, disableExpiredAppointments };

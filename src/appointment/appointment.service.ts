@@ -88,6 +88,15 @@ const findByDateAndApproved = (date: any) => {
   });
 };
 
+const findExpiredAppointments = async () => {
+  const today = new Date();
+
+  return await Appointment.find({
+    appointmentDate: { $lt: today },
+    status: constants.WELLKNOWNSTATUS.PENDING,
+  });
+};
+
 export default {
   save,
   findAllByOrgAndDateAndTimeSlot,
@@ -96,4 +105,5 @@ export default {
   findAllByOrg,
   findById,
   findByDateAndApproved,
+  findExpiredAppointments,
 };
