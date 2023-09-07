@@ -8,6 +8,7 @@ import {
   GetAllAppointments,
   ApproveOrRejectAppointment,
   UpdateAppointment,
+  DeleteAppointment,
 } from "./appointment.controller";
 
 const AppointmentRouter = Router();
@@ -35,9 +36,15 @@ AppointmentRouter.put(
   ApproveOrRejectAppointment
 );
 
-AppointmentRouter.put(
+AppointmentRouter.patch(
   "/update/:appointmentId",
   authMiddleware.authorize([constants.USER.ROLES.USER]),
   UpdateAppointment
+);
+
+AppointmentRouter.put(
+  "/delete/:appointmentId",
+  authMiddleware.authorize([constants.USER.ROLES.USER]),
+  DeleteAppointment
 );
 export default AppointmentRouter;

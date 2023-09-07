@@ -88,6 +88,20 @@ const findByDateAndApproved = (date: any) => {
   });
 };
 
+const disableExpiredAppointments = async () => {
+  const today = new Date();
+
+  const appointments: any = await Appointment.find({
+    appointmentDate: { $lt: today },
+    status: constants.WELLKNOWNSTATUS.PENDING,
+  });
+
+  appointments.forEach(async (appointment: any) => {
+    appointment.status = constants.WELLKNOWNSTATUS.DISABLED;
+    await appointment.save();
+  });
+};
+
 export default {
   save,
   findAllByOrgAndDateAndTimeSlot,
@@ -96,4 +110,5 @@ export default {
   findAllByOrg,
   findById,
   findByDateAndApproved,
+  disableExpiredAppointments,
 };

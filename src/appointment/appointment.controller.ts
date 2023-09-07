@@ -13,6 +13,8 @@ import CustomResponse from "../util/response";
 import NotFoundError from "../error/error.classes/NotFoundError";
 import constants from "../constant";
 import { sendEmail } from "../util/emailServer";
+import BadRequestError from "../error/error.classes/BadRequestError";
+import ForbiddenError from "../error/error.classes/ForbiddenError";
 
 const CreateAppointment = async (req: Request, res: Response) => {
   const body: any = req.body;
@@ -32,7 +34,7 @@ const CreateAppointment = async (req: Request, res: Response) => {
     );
 
   if (validateAppointments.length > 0)
-    throw new NotFoundError("Time slot is already booked!");
+    throw new BadRequestError("Time slot is already booked!");
 
   const newAppointment = new Appointment({
     title: body.title,
@@ -109,6 +111,8 @@ const GetAvailableSlots = async (req: Request, res: Response) => {
 const GetAllAppointments = async (req: Request, res: Response) => {
   const auth: any = req.auth;
 
+  await appointmentService.disableExpiredAppointments();
+
   let appointments: any = null;
   if (auth.role == constants.USER.ROLES.ADMIN) {
     const user: any = await userService.findById(auth._id);
@@ -135,14 +139,14 @@ const ApproveOrRejectAppointment = async (req: Request, res: Response) => {
   if (!appointment) throw new NotFoundError("Appointment not found!");
 
   if (appointment.status != constants.WELLKNOWNSTATUS.PENDING)
-    throw new NotFoundError("Appointment is already approved or rejected!");
+    throw new BadRequestError("Appointment is already approved or rejected!");
 
   const user = await userService.findByOrganization(appointment.organization);
 
   if (!user) throw new NotFoundError("Organization not found!");
 
-  if (user._id != req.auth._id)
-    throw new NotFoundError("You are not authorized to perform this action!");
+  if (user._id.toString() != req.auth._id)
+    throw new ForbiddenError("You are not authorized to perform this action!");
 
   const addedUser: any = await userService.findById(appointment.addedBy);
 
@@ -209,7 +213,72 @@ const ApproveOrRejectAppointment = async (req: Request, res: Response) => {
   }
 };
 
-const UpdateAppointment = async (req: Request, res: Response) => {};
+const UpdateAppointment = async (req: Request, res: Response) => {
+  const appointmentID: any = req.params.appointmentId;
+  const auth: any = req.auth;
+  const body: any = req.body;
+
+  const appointment: any = await appointmentService.findById(appointmentID);
+
+  if (!appointment) throw new NotFoundError("Appointment not found!");
+
+  let today = new Date();
+
+  if (appointment.appointmentDate < today)
+    throw new BadRequestError("Appointment date is already passed!");
+
+  if (appointment.status != constants.WELLKNOWNSTATUS.PENDING)
+    throw new BadRequestError("Appointment is already approved or rejected!");
+
+  if (appointment.addedBy.toString() != auth._id)
+    throw new ForbiddenError("You are not authorized to perform this action!");
+
+  for (let key in body) {
+    if (key !== "addedBy") {
+      appointment[key] = body[key];
+    }
+  }
+
+  try {
+    await appointmentService.save(appointment, null);
+    CustomResponse(
+      res,
+      true,
+      StatusCodes.OK,
+      "Appointment updated successfully!",
+      appointment
+    );
+  } catch (e) {
+    throw e;
+  }
+};
+
+const DeleteAppointment = async (req: Request, res: Response) => {
+  const appointmentID: any = req.params.appointmentId;
+  const auth: any = req.auth;
+
+  const appointment: any = await appointmentService.findById(appointmentID);
+
+  if (!appointment) throw new NotFoundError("Appointment not found!");
+
+  if (appointment.addedBy.toString() != auth._id)
+    throw new ForbiddenError("You are not authorized to perform this action!");
+
+  appointment.status = constants.WELLKNOWNSTATUS.DELETED;
+
+  try {
+    await appointmentService.save(appointment, null);
+    CustomResponse(
+      res,
+      true,
+      StatusCodes.OK,
+      "Appointment deleted successfully!",
+      null
+    );
+  } catch (e) {
+    throw e;
+  }
+};
 
 export {
   CreateAppointment,
@@ -217,4 +286,5 @@ export {
   GetAllAppointments,
   ApproveOrRejectAppointment,
   UpdateAppointment,
+  DeleteAppointment,
 };
