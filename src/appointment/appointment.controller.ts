@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
-import { timeSlots } from "./appointment.util";
+import { timeSlots, disableExpiredAppointments } from "./appointment.util";
 import appointmentService from "./appointment.service";
 import organizationService from "../organization/organization.service";
 import userService from "../user/user.service";
@@ -111,7 +111,7 @@ const GetAvailableSlots = async (req: Request, res: Response) => {
 const GetAllAppointments = async (req: Request, res: Response) => {
   const auth: any = req.auth;
 
-  await appointmentService.disableExpiredAppointments();
+  await disableExpiredAppointments();
 
   let appointments: any = null;
   if (auth.role == constants.USER.ROLES.ADMIN) {
