@@ -17,9 +17,6 @@ app.use(express.json());
 //api router Mappings
 requestMappings(app);
 
-//error handler middleware
-app.use(errorHandlerMiddleware);
-
 //404 not found route
 app.all("*", async (req: Request, res: Response) => {
   throw new NotFoundError("API endpoint not found!");
@@ -27,6 +24,9 @@ app.all("*", async (req: Request, res: Response) => {
 
 //setup cron jobs
 sendAppointmentReminders();
+
+//error handler middleware
+app.use(errorHandlerMiddleware);
 
 const start = async () => {
   const port = process.env.PORT || 5000;
