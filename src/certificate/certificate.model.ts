@@ -49,6 +49,11 @@ const CertificateSchema = new mongoose.Schema({
     type: [String],
   },
 
+  addedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+
   status: {
     type: Number,
     default: constants.WELLKNOWNSTATUS.PENDING,

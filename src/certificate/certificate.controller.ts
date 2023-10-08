@@ -11,6 +11,7 @@ import constants from "../constant";
 
 const RequestCertificates = async (req: Request, res: Response) => {
   const body: any = req.body;
+  const auth: any = req.auth;
 
   const certificateType = await categoryService.findById(body.certificate);
 
@@ -22,6 +23,7 @@ const RequestCertificates = async (req: Request, res: Response) => {
   if (!serviceType) throw new BadRequestError("Service type not found!");
 
   const newCertificateReq = new Certificate(body);
+  newCertificateReq.addedBy = auth._id;
 
   let createdRequest: any = null;
 
@@ -57,7 +59,7 @@ const GetAllCertificates = async (req: Request, res: Response) => {
     allRequests = await certificateService.findAllApproveAndPending();
   } else {
     allRequests = await certificateService.findAllApprovePendingAndRejectByUser(
-      auth.userId
+      auth._id
     );
   }
 
@@ -96,4 +98,34 @@ const ApproveRejectRequest = async (req: Request, res: Response) => {
 
   CustomResponse(res, true, StatusCodes.OK, resData, null);
 };
-export { RequestCertificates, GetAllCertificates, ApproveRejectRequest };
+
+const DeleteRequest = async (req: Request, res: Response) => {
+  const certificateId = req.params.certificateId;
+
+  const requestCheck = await certificateService.findById(certificateId);
+
+  if (!requestCheck)
+    throw new BadRequestError("Certificate request not found!");
+
+  if (requestCheck.addedBy?.toString() !== req.auth._id.toString())
+    throw new BadRequestError("You are not authorized to delete this request!");
+
+  requestCheck.status = constants.WELLKNOWNSTATUS.DELETED;
+
+  await certificateService.save(requestCheck, null);
+
+  CustomResponse(
+    res,
+    true,
+    StatusCodes.OK,
+    "Certificate request deleted successfully!",
+    null
+  );
+};
+
+export {
+  RequestCertificates,
+  GetAllCertificates,
+  ApproveRejectRequest,
+  DeleteRequest,
+};

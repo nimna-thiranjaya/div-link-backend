@@ -6,6 +6,7 @@ import {
   RequestCertificates,
   GetAllCertificates,
   ApproveRejectRequest,
+  DeleteRequest,
 } from "./certificate.controller";
 import commonMiddleware from "../common/common.middleware";
 
@@ -30,6 +31,12 @@ CertificateRouter.put(
   "/approveReject/:certificateId",
   authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
   ApproveRejectRequest
+);
+
+CertificateRouter.put(
+  "/delete/:certificateId",
+  authMiddleware.authorize([constants.USER.ROLES.USER]),
+  DeleteRequest
 );
 
 export default CertificateRouter;
