@@ -2,7 +2,11 @@ import { Router } from "express";
 import authMiddleware from "../auth/auth.middleware";
 import constants from "../constant";
 
-import { RequestCertificates } from "./certificate.controller";
+import {
+  RequestCertificates,
+  GetAllCertificates,
+} from "./certificate.controller";
+import commonMiddleware from "../common/common.middleware";
 
 const CertificateRouter = Router();
 
@@ -17,7 +21,8 @@ CertificateRouter.get(
   authMiddleware.authorize([
     constants.USER.ROLES.ADMIN,
     constants.USER.ROLES.USER,
-  ])
+  ]),
+  GetAllCertificates
 );
 
 export default CertificateRouter;
