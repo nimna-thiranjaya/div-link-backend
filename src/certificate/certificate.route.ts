@@ -7,8 +7,9 @@ import {
   GetAllCertificates,
   ApproveRejectRequest,
   DeleteRequest,
+  GetOneCertificate,
+  UpdateRequest,
 } from "./certificate.controller";
-import commonMiddleware from "../common/common.middleware";
 
 const CertificateRouter = Router();
 
@@ -37,6 +38,21 @@ CertificateRouter.put(
   "/delete/:certificateId",
   authMiddleware.authorize([constants.USER.ROLES.USER]),
   DeleteRequest
+);
+
+CertificateRouter.get(
+  "/getById/:certificateId",
+  authMiddleware.authorize([
+    constants.USER.ROLES.ADMIN,
+    constants.USER.ROLES.USER,
+  ]),
+  GetOneCertificate
+);
+
+CertificateRouter.patch(
+  "/update/:certificateId",
+  authMiddleware.authorize([constants.USER.ROLES.USER]),
+  UpdateRequest
 );
 
 export default CertificateRouter;

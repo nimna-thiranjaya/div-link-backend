@@ -123,9 +123,69 @@ const DeleteRequest = async (req: Request, res: Response) => {
   );
 };
 
+const GetOneCertificate = async (req: Request, res: Response) => {
+  const certificateId = req.params.certificateId;
+
+  const certificate = await certificateService.findById(certificateId);
+
+  if (!certificate) throw new BadRequestError("Certificate request not found!");
+
+  CustomResponse(res, true, StatusCodes.OK, "", certificate);
+};
+
+const UpdateRequest = async (req: Request, res: Response) => {
+  const certificateId = req.params.certificateId;
+  const body: any = req.body;
+  const auth: any = req.auth;
+
+  const certificateRequest: any = await certificateService.findById(
+    certificateId
+  );
+
+  if (!certificateRequest)
+    throw new BadRequestError("Certificate request not found!");
+
+  if (certificateRequest.addedBy?.toString() !== auth._id.toString())
+    throw new BadRequestError("You are not authorized to update this request!");
+
+  if (certificateRequest.status !== constants.WELLKNOWNSTATUS.PENDING)
+    throw new BadRequestError(
+      "Certificate request is already approved or rejected!"
+    );
+
+  if (body.certificate) {
+    const checkCertificate = await categoryService.findById(body.certificate);
+
+    if (!checkCertificate)
+      throw new BadRequestError("Certificate type not found!");
+  }
+
+  if (body.serviceType) {
+    const checkServiceType = await categoryService.findById(body.serviceType);
+
+    if (!checkServiceType) throw new BadRequestError("Service type not found!");
+  }
+
+  //construct certificate request update object
+  for (const key in body) {
+    certificateRequest[key] = body[key];
+  }
+
+  await certificateService.save(certificateRequest, null);
+
+  CustomResponse(
+    res,
+    true,
+    StatusCodes.OK,
+    "Certificate request updated successfully!",
+    null
+  );
+};
 export {
   RequestCertificates,
   GetAllCertificates,
   ApproveRejectRequest,
   DeleteRequest,
+  GetOneCertificate,
+  UpdateRequest,
 };
