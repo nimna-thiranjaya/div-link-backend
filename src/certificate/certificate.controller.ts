@@ -64,4 +64,36 @@ const GetAllCertificates = async (req: Request, res: Response) => {
   CustomResponse(res, true, StatusCodes.OK, "", allRequests);
 };
 
-export { RequestCertificates, GetAllCertificates };
+const ApproveRejectRequest = async (req: Request, res: Response) => {
+  const certificateId = req.params.certificateId;
+  const status = req.query.status;
+
+  const requestCheck = await certificateService.findById(certificateId);
+
+  if (!requestCheck)
+    throw new BadRequestError("Certificate request not found!");
+
+  if (requestCheck.status !== constants.WELLKNOWNSTATUS.PENDING)
+    throw new BadRequestError(
+      "Certificate request is already approved or rejected!"
+    );
+
+  let resData: any = null;
+  switch (Number(status)) {
+    case 3:
+      requestCheck.status = constants.WELLKNOWNSTATUS.APPROVE;
+      resData = "Certificate request approved successfully!";
+      break;
+    case 4:
+      requestCheck.status = constants.WELLKNOWNSTATUS.REJECT;
+      resData = "Certificate request rejected successfully!";
+      break;
+    default:
+      throw new BadRequestError("Invalid status!");
+  }
+
+  await certificateService.save(requestCheck, null);
+
+  CustomResponse(res, true, StatusCodes.OK, resData, null);
+};
+export { RequestCertificates, GetAllCertificates, ApproveRejectRequest };

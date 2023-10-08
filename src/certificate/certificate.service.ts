@@ -33,8 +33,22 @@ const findAllApprovePendingAndRejectByUser = async (userId: string) => {
   }).populate("certificate serviceType");
 };
 
+const findById = async (id: string) => {
+  return await Certificate.findOne({
+    _id: id,
+    status: {
+      $in: [
+        constants.WELLKNOWNSTATUS.APPROVE,
+        constants.WELLKNOWNSTATUS.PENDING,
+        constants.WELLKNOWNSTATUS.REJECT,
+      ],
+    },
+  });
+};
+
 export default {
   save,
   findAllApproveAndPending,
   findAllApprovePendingAndRejectByUser,
+  findById,
 };

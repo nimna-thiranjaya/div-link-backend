@@ -5,6 +5,7 @@ import constants from "../constant";
 import {
   RequestCertificates,
   GetAllCertificates,
+  ApproveRejectRequest,
 } from "./certificate.controller";
 import commonMiddleware from "../common/common.middleware";
 
@@ -23,6 +24,12 @@ CertificateRouter.get(
     constants.USER.ROLES.USER,
   ]),
   GetAllCertificates
+);
+
+CertificateRouter.put(
+  "/approveReject/:certificateId",
+  authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
+  ApproveRejectRequest
 );
 
 export default CertificateRouter;
